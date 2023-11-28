@@ -7,6 +7,8 @@
         android:title=""
         android:icon="@drawable/self_improvement"
         app:showAsAction="ifRoom"
+        android:checked="false"
+
 
 
 
@@ -20,6 +22,7 @@
 
     <item android:id="@+id/palceholder"
         android:title=""
+
         />
 
     <item android:id="@+id/call"
