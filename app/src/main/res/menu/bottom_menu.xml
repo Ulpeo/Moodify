@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/meditate"
+        android:title=""
+        android:icon="@drawable/self_improvement"
+        app:showAsAction="ifRoom"
+
+
+
+         />
+    <item android:id="@+id/reaction"
+        android:title=""
+        android:icon="@drawable/add_reaction"
+        app:showAsAction="ifRoom"
+
+        />
+
+    <item android:id="@+id/palceholder"
+        android:title=""
+        />
+
+    <item android:id="@+id/call"
+        android:title=""
+        android:icon="@drawable/call"
+        app:showAsAction="ifRoom"
+
+        />
+    <item android:id="@+id/profile"
+        android:title=""
+        android:icon="@drawable/account_circle"
+        app:showAsAction="ifRoom"
+
+        />
+
+
+</menu>
