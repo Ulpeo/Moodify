@@ -3,7 +3,9 @@ package com.example.moodify
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.moodify.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,12 +16,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 
-class MainActivity : AppCompatActivity() {
+// for Firebase
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+class MainActivity : AppCompatActivity(), Login.Callbacks {
+
+    private lateinit var auth: FirebaseAuth
+    val binding by lazy { ActivityMainBinding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
+        FirebaseApp.initializeApp(this)
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
 
         //delete shadow behind the icons
         binding.bottomNavigationView.background = null
@@ -67,5 +81,58 @@ class MainActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(binding.mainFrag.id,fragment)
         transaction.commit()
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            binding.helloWorld.text = currentUser.email
+        } else {
+            loadFragment(Login())
+        }
+    }
+
+    override fun createAccount(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("ITM", "createUserWithEmail:success")
+                    val user = auth.currentUser
+                    binding.helloWorld.text = "New User: ${user?.email ?: "No user!"}"
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("ITM", "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    binding.helloWorld.text = "Fail!"
+                }
+            }
+    }
+
+    override fun signIn(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("ITM", "signInWithEmail:success")
+                    val user = auth.currentUser
+                    binding.helloWorld.text = "Current User: ${user?.email ?: "No User!"}"
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("ITM", "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    binding.helloWorld.text = "Fail!"
+                }
+            }
     }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "343866140942",
+    "project_id": "moodify-80a3e",
+    "storage_bucket": "moodify-80a3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343866140942:android:8f3c85031c407a29380f5f",
+        "android_client_info": {
+          "package_name": "com.example.moodify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFFaTJl4kzR124e_S9kbXk995eCG_ynyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
