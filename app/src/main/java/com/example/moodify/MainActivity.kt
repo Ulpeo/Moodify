@@ -35,6 +35,12 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
+        // Sign out functionality
+        binding.buttonSignOut.setOnClickListener({
+            FirebaseAuth.getInstance().signOut()
+            checkUser()
+        })
+
         //delete shadow behind the icons
         binding.bottomNavigationView.background = null
 
@@ -77,7 +83,6 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
 
     //function to display fragments
     private  fun loadFragment(fragment: Fragment){
-        val binding = ActivityMainBinding.inflate(layoutInflater)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(binding.mainFrag.id,fragment)
         transaction.commit()
@@ -86,10 +91,15 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
+        checkUser()
+    }
+
+    fun checkUser() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             binding.helloWorld.text = currentUser.email
         } else {
+            binding.helloWorld.text = "Hello World!"
             loadFragment(Login())
         }
     }
@@ -101,6 +111,9 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ITM", "createUserWithEmail:success")
                     val user = auth.currentUser
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.remove(Login())
+                    transaction.commit()
                     binding.helloWorld.text = "New User: ${user?.email ?: "No user!"}"
                 } else {
                     // If sign in fails, display a message to the user.
@@ -122,6 +135,9 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ITM", "signInWithEmail:success")
                     val user = auth.currentUser
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.remove(Login())
+                    transaction.commit()
                     binding.helloWorld.text = "Current User: ${user?.email ?: "No User!"}"
                 } else {
                     // If sign in fails, display a message to the user.
