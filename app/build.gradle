@@ -34,6 +34,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/license.txt")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/notice.txt")
+        exclude("META-INF/ASL2.0")
+        exclude("META-INF/*.kotlin_module")
+    }
 }
 
 dependencies {
@@ -50,6 +62,36 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.5.0')
     implementation 'com.google.firebase:firebase-auth'
 
+    // for Google Calendar
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleCompatible
+    //implementation 'com.android.support:appcompat-v7:25.0.1'
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+    implementation 'pub.devrel:easypermissions:0.3.0'
+//    implementation('com.google.api-client:google-api-client-android:1.23.0') {
+//        exclude group: 'org.apache.httpcomponents'
+//    }
+//    implementation('com.google.apis:google-api-services-calendar-v3-rev407-1.18.0-rc') {
+//        exclude group: 'org.apache.httpcomponents'
+//    }
+
+    implementation 'com.google.api-client:google-api-client:1.15'
+
+    //for google auth and calendar integrations
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    implementation 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
+
+    //to avoid conflicts in libraries
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    implementation('com.google.api-client:google-api-client-android:1.23.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+    //so that we can easily control permissions
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    implementation 'com.google.api-client:google-api-client-jackson2:1.20.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             binding.helloWorld.text = currentUser.email
+            loadFragment(GetEventFragment())
         } else {
             binding.helloWorld.text = "Hello World!"
             loadFragment(Login())
@@ -111,9 +112,7 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ITM", "createUserWithEmail:success")
                     val user = auth.currentUser
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.remove(Login())
-                    transaction.commit()
+                    loadFragment(GetEventFragment())
                     binding.helloWorld.text = "New User: ${user?.email ?: "No user!"}"
                 } else {
                     // If sign in fails, display a message to the user.
@@ -135,9 +134,7 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ITM", "signInWithEmail:success")
                     val user = auth.currentUser
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.remove(Login())
-                    transaction.commit()
+                    loadFragment(GetEventFragment())
                     binding.helloWorld.text = "Current User: ${user?.email ?: "No User!"}"
                 } else {
                     // If sign in fails, display a message to the user.
