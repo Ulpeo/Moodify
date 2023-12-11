@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import com.example.moodify.databinding.FragmentNewEntryBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +46,7 @@ class NewEntryFragment : Fragment() {
 
         // get or instantiate DiaryEntriesDB
         val diaryEntriesDB = DiaryEntriesDB.getInstance(this.requireActivity())
+        val moodDB = MoodDB.getInstance(this.requireActivity())
 
         with(binding) {
             btnSaveEntry.setOnClickListener {
@@ -69,6 +71,33 @@ class NewEntryFragment : Fragment() {
                     requireActivity().findViewById(android.R.id.content),
                     "Entry saved!", Snackbar.LENGTH_SHORT
                 ).show()
+            }
+
+            btnSaveMood.setOnClickListener {
+                GlobalScope.launch(Dispatchers.IO) {
+                    val date = (entryDate.year).toString() + "/" + (entryDate.month + 1).toString() + "/" + entryDate.dayOfMonth
+                    if(moodDB.moodDAO().getMood(date) != null) {
+                        Snackbar.make(
+                            requireActivity().findViewById(android.R.id.content),
+                            "Only one mood per day!", Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        val checkedMood = moodSelect.checkedRadioButtonId
+                        val selectedRadioButton = requireActivity().findViewById(checkedMood) as RadioButton
+                        val moodDescription = selectedRadioButton.text.toString()
+
+                        val mood = Mood(
+                            date,
+                            moodDescription
+                        )
+
+                        moodDB.moodDAO().insert(mood)
+                        Snackbar.make(
+                            requireActivity().findViewById(android.R.id.content),
+                            "Entry saved!", Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
 

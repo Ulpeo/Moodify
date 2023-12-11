@@ -7,52 +7,98 @@
     android:layout_height="match_parent"
     tools:context=".NewEntryFragment" >
 
-    <DatePicker
-        android:id="@+id/entryDate"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:scaleX=".5"
-        android:scaleY=".5"
-        android:translationZ="-1dp"
-        android:visibility="visible"
+        android:layout_height="500dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/dailyGratitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Daily gratitude"
-        android:inputType="text|textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entryDate" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/freeExpression"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Free expression"
-        android:inputType="text|textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyGratitude" />
+            <DatePicker
+                android:id="@+id/entryDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:translationZ="-1dp"
+                android:visibility="visible" />
 
-    <Button
-        android:id="@+id/btnSaveEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Save Entry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/freeExpression" />
+            <EditText
+                android:id="@+id/dailyGratitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Daily gratitude"
+                android:inputType="text|textMultiLine" />
+
+            <EditText
+                android:id="@+id/freeExpression"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="Free expression"
+                android:inputType="text|textMultiLine" />
+
+            <Button
+                android:id="@+id/btnSaveEntry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Save Entry" />
+
+            <RadioGroup
+                android:id="@+id/moodSelect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <RadioButton
+                    android:id="@+id/moodAnxious"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Anxious" />
+
+                <RadioButton
+                    android:id="@+id/moodSad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sad" />
+
+                <RadioButton
+                    android:id="@+id/moodSoso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="So so" />
+
+                <RadioButton
+                    android:id="@+id/moodGood"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Good" />
+
+                <RadioButton
+                    android:id="@+id/moodHappy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Happy" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnSaveMood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Save Mood" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
