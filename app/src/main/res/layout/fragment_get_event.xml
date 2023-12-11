@@ -2,33 +2,76 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout2"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".GetEventFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/txtOut"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="204dp"
-        android:text=" "
+        android:layout_height="450dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnCalendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="100dp"
-        android:text="Get upcoming events"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/newEventTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="Event title"
+                android:inputType="text" />
+
+            <DatePicker
+                android:id="@+id/newEventStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:translationZ="-1dp"
+                android:visibility="visible" />
+
+            <TimePicker
+                android:id="@+id/newEventStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:contextClickable="true"
+                android:focusable="auto"
+                android:focusableInTouchMode="true"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:screenReaderFocusable="true"
+                android:timePickerMode="spinner"
+                android:translationZ="-1dp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btnNewEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New event" />
+
+            <TextView
+                android:id="@+id/txtOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="30dp"
+                android:text=" " />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,5 @@
 package com.example.moodify
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.Manifest
 import android.accounts.AccountManager
 import android.app.Activity
@@ -12,8 +7,12 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.text.TextUtils
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.moodify.databinding.FragmentGetEventBinding
 import com.example.moodify.model.GetEventModel
@@ -34,9 +33,12 @@ import com.google.api.client.util.DateTime
 import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
+import com.google.api.services.calendar.model.Event
+import com.google.api.services.calendar.model.EventDateTime
 import kotlinx.coroutines.cancel
 import pub.devrel.easypermissions.EasyPermissions
-import java.io.IOException
+import java.util.Date
+
 
 class GetEventFragment : Fragment() {
 
@@ -99,14 +101,83 @@ class GetEventFragment : Fragment() {
     private fun initView() {
         mProgress = ProgressDialog(requireContext())
         mProgress!!.setMessage("Loading...")
+        getResultsFromApi()
 
         with(binding) {
-            btnCalendar.setOnClickListener {
-                btnCalendar.isEnabled = false
-                getResultsFromApi()
-                btnCalendar.isEnabled = true
+            btnNewEvent.setOnClickListener {
+                makeInsertTask()
             }
         }
+    }
+
+    fun getDataFromCalendar(): MutableList<GetEventModel> {
+        val now = DateTime(System.currentTimeMillis())
+        val eventStrings = ArrayList<GetEventModel>()
+        try {
+            val events = mService!!.events().list("primary")
+                .setMaxResults(5)
+                .setTimeMin(now)
+                .setOrderBy("startTime")
+                .setSingleEvents(true)
+                .execute()
+            val items = events.items
+
+            for (event in items) {
+                var start = event.start.dateTime
+                if (start == null) {
+                    start = event.start.date
+                }
+
+                eventStrings.add(
+                    GetEventModel(
+                        summary = event.summary,
+                        startDate = start.toString()
+                    )
+                )
+            }
+            return eventStrings
+
+        } catch (e:UserRecoverableAuthIOException) {
+            Log.d("Google", e.cause.toString())
+            startActivityForResult(e.intent, REQUEST_AUTHORIZATION)
+        }
+        return eventStrings
+    }
+
+    fun insertEvent() {
+        with(binding) {
+            val startDateTime = DateTime(Date(
+                newEventStartDate.year - 1900,
+                newEventStartDate.month,
+                newEventStartDate.dayOfMonth,
+                newEventStartTime.hour,
+                newEventStartTime.minute
+            ))
+            val start = EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone("Asia/Seoul")
+
+            val endDateTime = DateTime(Date(
+                newEventStartDate.year - 1900,
+                newEventStartDate.month,
+                newEventStartDate.dayOfMonth,
+                newEventStartTime.hour + 2,
+                newEventStartTime.minute
+            ))
+            val end = EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone("Asia/Seoul")
+
+            var event: Event = Event()
+                .setSummary(newEventTitle.text.toString())
+                .setStart(start)
+                .setEnd(end)
+
+            Log.d("Google Calendar", "New event: $event")
+
+            mService!!.events().insert("primary", event).execute()
+        }
+        makeRequestTask()
     }
 
     private fun initCredentials() {
@@ -121,7 +192,6 @@ class GetEventFragment : Fragment() {
     private fun initCalendarBuild(credential: GoogleAccountCredential?) {
         val transport = AndroidHttp.newCompatibleTransport()
         val jsonFactory = JacksonFactory.getDefaultInstance()
-        Log.d("test", "moments before disaster")
         mService = Calendar.Builder(
             transport, jsonFactory, credential
         )
@@ -134,6 +204,7 @@ class GetEventFragment : Fragment() {
             acquireGooglePlayServices()
         } else if (mCredential!!.selectedAccountName == null) {
             chooseAccount()
+            Log.d("Google Calendar", "Choose account!")
         } else if (!isDeviceOnline()) {
             binding.txtOut.text = "No network connection available."
         } else {
@@ -142,13 +213,10 @@ class GetEventFragment : Fragment() {
     }
 
     private fun chooseAccount() {
-        if (EasyPermissions.hasPermissions(
-                requireContext(), Manifest.permission.GET_ACCOUNTS
-            )
-        ) {
+        if (EasyPermissions.hasPermissions(requireContext(), Manifest.permission.GET_ACCOUNTS)) {
             val accountName = null
-                //this.activity?.getPreferences(Context.MODE_PRIVATE)
-                //?.getString(PREF_ACCOUNT_NAME, null)
+                this.activity?.getPreferences(Context.MODE_PRIVATE)
+                ?.getString(PREF_ACCOUNT_NAME, null)
             if (accountName != null) {
                 mCredential!!.selectedAccountName = accountName
                 getResultsFromApi()
@@ -230,17 +298,12 @@ class GetEventFragment : Fragment() {
             onPostExecute = { output ->
                 mProgress!!.hide()
                 if (output == null || output.size == 0) {
-                    Log.d("Google", "no data")
+                    Log.d("Google Calendar", "Calendar fetch: No data")
                 } else {
                     var textOutput = ""
                     for (index in 0 until output.size) {
                         textOutput += output[index].summary + " - Start: " + output[index].startDate+ "\n"
-                        Log.d(
-                            "Google",
-                            output[index].summary + " - Start: " + output[index].startDate+ "\n"
-                        )
                     }
-                    Log.d("Google", textOutput)
                     binding.txtOut.text = textOutput
                 }
             },
@@ -259,46 +322,55 @@ class GetEventFragment : Fragment() {
                         )
                     } else {
                         binding.txtOut.text =
-                            "The following error occurred:\n" + mLastError!!.message
+                            "The following error occurred while fetching the calendar:\n" + mLastError!!.message
                     }
                 } else {
-                    Log.d("Google", "Request cancelled.")
+                    Log.d("Google Calendar", "Calendar fetch cancelled.")
                 }
             }
         )
     }
 
-    fun getDataFromCalendar(): MutableList<GetEventModel> {
-        val now = DateTime(System.currentTimeMillis())
-        val eventStrings = ArrayList<GetEventModel>()
-        try {
-            val events = mService!!.events().list("primary")
-                .setMaxResults(5)
-                .setTimeMin(now)
-                .setOrderBy("startTime")
-                .setSingleEvents(true)
-                .execute()
-            val items = events.items
+    private fun makeInsertTask() {
+        var mLastError: Exception? = null
 
-            for (event in items) {
-                var start = event.start.dateTime
-                if (start == null) {
-                    start = event.start.date
+        lifecycleScope.executeAsyncTask(
+            onStart = {
+                mProgress!!.show()
+            },
+            doInBackground = {
+                try {
+                    insertEvent()
+                } catch (e: Exception) {
+                    mLastError = e
+                    Log.d("ITM", "Tried to insert, but: $e")
+                    lifecycleScope.cancel()
+                    null
                 }
-
-                eventStrings.add(
-                    GetEventModel(
-                        summary = event.summary,
-                        startDate = start.toString()
-                    )
-                )
+            },
+            onPostExecute = { output ->
+                mProgress!!.hide()
+            },
+            onCancelled = {
+                mProgress!!.hide()
+                if (mLastError != null) {
+                    if (mLastError is GooglePlayServicesAvailabilityIOException) {
+                        showGooglePlayServicesAvailabilityErrorDialog(
+                            (mLastError as GooglePlayServicesAvailabilityIOException)
+                                .connectionStatusCode
+                        )
+                    } else if (mLastError is UserRecoverableAuthIOException) {
+                        this.startActivityForResult(
+                            (mLastError as UserRecoverableAuthIOException).intent,
+                            REQUEST_AUTHORIZATION
+                        )
+                    } else {
+                        Log.d("Google Calendar", "Error on insert cancelled:\n" + mLastError!!.message)
+                    }
+                } else {
+                    Log.d("Google Calendar", "Insert cancelled.")
+                }
             }
-            return eventStrings
-
-        } catch (e:UserRecoverableAuthIOException) {
-            Log.d("Google", e.cause.toString())
-            startActivityForResult(e.intent, REQUEST_AUTHORIZATION)
-        }
-        return eventStrings
+        )
     }
 }
