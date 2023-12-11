@@ -49,19 +49,26 @@ class NewEntryFragment : Fragment() {
         with(binding) {
             btnSaveEntry.setOnClickListener {
                 GlobalScope.launch(Dispatchers.IO) {
-                    val entry = DiaryEntry(
-                        (entryDate.year).toString() + "/" + (entryDate.month + 1).toString() + "/" + entryDate.dayOfMonth,
-                        dailyGratitude.text.toString(),
-                        freeExpression.text.toString()
-                    )
+                    val date = (entryDate.year).toString() + "/" + (entryDate.month + 1).toString() + "/" + entryDate.dayOfMonth
+                    if(diaryEntriesDB.diaryEntryDAO().getEntry(date) != null) {
+                        Snackbar.make(
+                            requireActivity().findViewById(android.R.id.content),
+                            "Only one entry per day!", Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        val entry = DiaryEntry(
+                            date,
+                            dailyGratitude.text.toString(),
+                            freeExpression.text.toString()
+                        )
 
-                    diaryEntriesDB.diaryEntryDAO().insert(entry)
+                        diaryEntriesDB.diaryEntryDAO().insert(entry)
+                    }
                 }
-                val mySnackbar = Snackbar.make(
+                Snackbar.make(
                     requireActivity().findViewById(android.R.id.content),
                     "Entry saved!", Snackbar.LENGTH_SHORT
-                )
-                mySnackbar.show()
+                ).show()
             }
         }
 

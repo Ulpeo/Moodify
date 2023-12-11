@@ -16,7 +16,11 @@ interface DiaryEntryDAO {
     @Delete
     fun delete(entry: DiaryEntry)
 
-    // get all lucky numbers method
+    // get all diary entries
     @Query("SELECT * FROM diary_entries")
     fun getAll(): List<DiaryEntry>
+
+    // get a specific diary entry
+    @Query("SELECT * FROM diary_entries WHERE date = :entryDate")
+    fun getEntry(entryDate: String): DiaryEntry
 }
