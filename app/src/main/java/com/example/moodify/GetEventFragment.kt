@@ -215,8 +215,7 @@ class GetEventFragment : Fragment() {
     private fun chooseAccount() {
         if (EasyPermissions.hasPermissions(requireContext(), Manifest.permission.GET_ACCOUNTS)) {
             val accountName = null
-                this.activity?.getPreferences(Context.MODE_PRIVATE)
-                ?.getString(PREF_ACCOUNT_NAME, null)
+            this.activity?.getPreferences(Context.MODE_PRIVATE)?.getString(PREF_ACCOUNT_NAME, null)
             if (accountName != null) {
                 mCredential!!.selectedAccountName = accountName
                 getResultsFromApi()

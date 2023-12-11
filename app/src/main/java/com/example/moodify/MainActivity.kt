@@ -79,6 +79,11 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
 
         bottomNavigationView.selectedItemId = -1
 
+        // display new entry fragment
+        binding.btnAddEntry.setOnClickListener {
+            loadFragment(NewEntryFragment())
+            true
+        }
     }
 
     //function to display fragments
