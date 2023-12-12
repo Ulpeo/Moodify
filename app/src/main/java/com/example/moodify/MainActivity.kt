@@ -111,6 +111,14 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
     }
 
     override fun createAccount(email: String, password: String) {
+        if(email == null || email == "" || password == null || password == "") {
+            Toast.makeText(
+                baseContext,
+                "Make sure to fill in your login information correctly.",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -133,6 +141,14 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
     }
 
     override fun signIn(email: String, password: String) {
+        if(email == null || email == "" || password == null || password == "") {
+            Toast.makeText(
+                baseContext,
+                "Make sure to fill in your login information correctly.",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
