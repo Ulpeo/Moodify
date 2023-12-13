@@ -1,5 +1,7 @@
 package com.example.moodify
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -40,7 +42,22 @@ class Call : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCallBinding.inflate(inflater, container, false)
         Log.d("ITM",param1+param2)
+
+
+        binding.diall1.setOnClickListener {callPhoneNumber("112")}
+        binding.diall2.setOnClickListener{callPhoneNumber("1393")}
+        binding.diall3.setOnClickListener{callPhoneNumber("3396-6460")}
+
+
+
         return binding.root
+    }
+    //function to call a number
+    private fun callPhoneNumber(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:$phoneNumber")
+        }
+        startActivity(intent)
     }
 
     companion object {

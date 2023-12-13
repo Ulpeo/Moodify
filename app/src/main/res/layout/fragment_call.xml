@@ -9,15 +9,100 @@
     tools:context=".Call">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="153dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="376dp"
-        android:layout_marginEnd="120dp"
-        android:text="make a call"
-        app:layout_constraintEnd_toEndOf="parent"
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="145dp"
+        android:layout_height="162dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/lennie"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/lennie" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="162dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="24dp"
+        android:text="If you don't feel good here's some number you can call. Just tap on the phone to make the call !"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <ImageButton
+        android:id="@+id/diall1"
+        android:layout_width="63dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:accessibilityHeading="false"
+        android:background="@drawable/rounded_button_background"
+        android:contentDescription="Diall button"
+        android:cropToPadding="false"
+        android:labelFor="@id/imageView"
+        android:src="@drawable/call"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:tint="@color/main_blue" />
+
+    <ImageButton
+        android:id="@+id/diall2"
+        android:layout_width="63dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="44dp"
+        android:accessibilityHeading="false"
+        android:background="@drawable/rounded_button_background"
+        android:contentDescription="Diall button"
+        android:cropToPadding="false"
+        android:labelFor="@id/imageView"
+        android:src="@drawable/call"
+        app:layout_constraintStart_toStartOf="@+id/diall1"
+        app:layout_constraintTop_toBottomOf="@+id/diall1"
+        app:tint="@color/main_blue" />
+
+    <ImageButton
+        android:id="@+id/diall3"
+        android:layout_width="63dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="44dp"
+        android:accessibilityHeading="false"
+        android:background="@drawable/rounded_button_background"
+        android:contentDescription="Diall button"
+        android:cropToPadding="false"
+        android:labelFor="@id/imageView"
+        android:src="@drawable/call"
+        app:layout_constraintStart_toStartOf="@+id/diall2"
+        app:layout_constraintTop_toBottomOf="@+id/diall2"
+        app:tint="@color/main_blue" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:text="Emergency Number"
+        app:layout_constraintBottom_toBottomOf="@+id/diall1"
+        app:layout_constraintStart_toEndOf="@+id/diall1"
+        app:layout_constraintTop_toTopOf="@+id/diall1" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Korea prevention suicide center"
+        app:layout_constraintBottom_toBottomOf="@+id/diall2"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/diall2" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seoul mental health center"
+        app:layout_constraintBottom_toBottomOf="@+id/diall3"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/diall3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
