@@ -17,26 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonSignOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="250dp"
-        android:text="Sign out" />
-
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/main_blue"
-        tools:ignore="BottomAppBar,MissingConstraints"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="669dp"
         app:fabCradleMargin="0dp"
         app:fabCradleRoundedCornerRadius="0dp"
         app:fabCradleVerticalOffset="10dp"
+        tools:ignore="BottomAppBar,MissingConstraints"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="669dp"
 
 
         >
@@ -59,18 +52,19 @@
         android:id="@+id/btnAddEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="@color/secondary_blue"
         android:contentDescription="TODO"
-        android:layout_marginBottom="0dp"
         android:src="@drawable/add"
-        app:layout_anchor="@id/bottomAppBar"
 
         tools:ignore="MissingConstraints" />
 
     <FrameLayout
         android:id="@+id/main_frag"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomAppBar"
         app:layout_anchor="@+id/main_frag"
         app:layout_anchorGravity="center">
 

@@ -3,6 +3,8 @@ package com.example.moodify
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
@@ -36,16 +38,16 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
         auth = Firebase.auth
 
         // Sign out functionality
-        binding.buttonSignOut.setOnClickListener({
+        /*binding.buttonSignOut.setOnClickListener({
             FirebaseAuth.getInstance().signOut()
             checkUser()
-        })
+        })*/
 
         //delete shadow behind the icons
         binding.bottomNavigationView.background = null
 
         //make the item placeholder (to align icons in bottomBar) disabled
-        binding.bottomNavigationView.menu.getItem(2).isEnabled = false
+        //binding.bottomNavigationView.menu.getItem(2).isEnabled = false
 
         //BottomBar which display different fragment depends on user's action
         val bottomNavigationView: BottomNavigationView = binding.bottomNavigationView
@@ -73,6 +75,7 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
                 }
                 R.id.home ->{
                     loadFragment(Home())
+
                     true
                 }
 
@@ -84,7 +87,7 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
         }
 
 
-        bottomNavigationView.selectedItemId = -1
+
 
         // display new entry fragment
         binding.btnAddEntry.setOnClickListener {
@@ -93,6 +96,24 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
         }
     }
 
+    //function for the app menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.appmenu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item != null) {
+            super.onOptionsItemSelected(item)
+        }
+        when (item?.itemId) {
+            R.id.logout -> {FirebaseAuth.getInstance().signOut()
+                checkUser()}
+
+        }
+        return true
+    }
     //function to display fragments
     private  fun loadFragment(fragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()

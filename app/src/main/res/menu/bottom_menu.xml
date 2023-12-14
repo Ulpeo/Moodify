@@ -4,38 +4,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/meditate"
+        android:enabled="true"
         android:title=""
         android:icon="@drawable/self_improvement"
         app:showAsAction="ifRoom"
 />
-    <item android:id="@+id/reaction"
-        android:title=""
+    <item
+        android:id="@+id/reaction"
+        android:enabled="true"
         android:icon="@drawable/add_reaction"
-        app:showAsAction="ifRoom"
-
-        />
-
-    <item android:id="@+id/home"
         android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
         android:icon="@drawable/home"
-        app:showAsAction="ifRoom"
-
-
-        />
-
-
-    <item android:id="@+id/call"
         android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/call"
+        android:enabled="true"
         android:icon="@drawable/call"
-        app:showAsAction="ifRoom"
-
-        />
-    <item android:id="@+id/profile"
         android:title=""
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
         android:icon="@drawable/account_circle"
-        app:showAsAction="ifRoom"
-
-        />
+        android:title=""
+        app:showAsAction="ifRoom" />
 
 
 </menu>

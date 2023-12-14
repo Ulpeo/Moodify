@@ -40,7 +40,7 @@ class Home : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        Log.d("ITM",param1+param2)
+        Log.d("ITM", "coucou je suis là")
         return binding.root
     }
 
