@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import com.example.moodify.databinding.FragmentNewEntryBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,27 +47,33 @@ class NewEntryFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentNewEntryBinding.inflate(inflater, container, false)
 
-        // get or instantiate DiaryEntriesDB
-        val diaryEntriesDB = DiaryEntriesDB.getInstance(this.requireActivity())
-        val moodDB = MoodDB.getInstance(this.requireActivity())
+        // get or instantiate DiaryDB
+        val diaryDB = DiaryDB.getInstance(this.requireActivity())
+        val moodsDB = MoodsDB.getInstance(this.requireActivity())
+
+        // firebase
+        var mAuth = FirebaseAuth.getInstance()
+        var auth = Firebase.auth
 
         with(binding) {
             btnSaveEntry.setOnClickListener {
                 GlobalScope.launch(Dispatchers.IO) {
                     val date = (entryDate.year).toString() + "/" + (entryDate.month + 1).toString() + "/" + entryDate.dayOfMonth
-                    if(diaryEntriesDB.diaryEntryDAO().getEntry(date) != null) {
+                    if(diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, date) != null) {
                         Snackbar.make(
                             requireActivity().findViewById(android.R.id.content),
                             "Only one entry per day!", Snackbar.LENGTH_SHORT
                         ).show()
                     } else {
                         val entry = DiaryEntry(
+                            0,
+                            auth.currentUser!!.email!!,
                             date,
                             dailyGratitude.text.toString(),
                             freeExpression.text.toString()
                         )
 
-                        diaryEntriesDB.diaryEntryDAO().insert(entry)
+                        diaryDB.diaryEntryDAO().insert(entry)
                     }
                 }
                 Snackbar.make(
@@ -76,7 +85,7 @@ class NewEntryFragment : Fragment() {
             btnSaveMood.setOnClickListener {
                 GlobalScope.launch(Dispatchers.IO) {
                     val date = (entryDate.year).toString() + "/" + (entryDate.month + 1).toString() + "/" + entryDate.dayOfMonth
-                    if(moodDB.moodDAO().getMood(date) != null) {
+                    if(moodsDB.moodDAO().getMood(auth.currentUser!!.email!!, date) != null) {
                         Snackbar.make(
                             requireActivity().findViewById(android.R.id.content),
                             "Only one mood per day!", Snackbar.LENGTH_SHORT
@@ -87,11 +96,13 @@ class NewEntryFragment : Fragment() {
                         val moodDescription = selectedRadioButton.text.toString()
 
                         val mood = Mood(
+                            0,
+                            auth.currentUser!!.email!!,
                             date,
                             moodDescription
                         )
 
-                        moodDB.moodDAO().insert(mood)
+                        moodsDB.moodDAO().insert(mood)
                         Snackbar.make(
                             requireActivity().findViewById(android.R.id.content),
                             "Entry saved!", Snackbar.LENGTH_SHORT

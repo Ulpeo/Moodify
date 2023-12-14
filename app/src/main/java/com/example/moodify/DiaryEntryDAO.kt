@@ -21,6 +21,6 @@ interface DiaryEntryDAO {
     fun getAll(): List<DiaryEntry>
 
     // get a specific diary entry
-    @Query("SELECT * FROM diary_entries WHERE date = :entryDate")
-    fun getEntry(entryDate: String): DiaryEntry
+    @Query("SELECT * FROM diary_entries WHERE userEmail = :userEmail AND date = :entryDate")
+    fun getEntry(userEmail: String, entryDate: String): DiaryEntry
 }

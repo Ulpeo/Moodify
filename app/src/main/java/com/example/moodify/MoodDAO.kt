@@ -21,6 +21,6 @@ interface MoodDAO {
     fun getAll(): List<Mood>
 
     // get a specific diary entry
-    @Query("SELECT * FROM mood WHERE date = :moodDate")
-    fun getMood(moodDate: String): Mood
+    @Query("SELECT * FROM mood WHERE userEmail = :userEmail AND date = :moodDate")
+    fun getMood(userEmail: String, moodDate: String): Mood
 }
