@@ -27,13 +27,19 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/main_blue"
         tools:ignore="BottomAppBar,MissingConstraints"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="669dp">
+        tools:layout_editor_absoluteY="669dp"
+        app:fabCradleMargin="0dp"
+        app:fabCradleRoundedCornerRadius="0dp"
+        app:fabCradleVerticalOffset="10dp"
+
+
+        >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
@@ -43,6 +49,7 @@
             android:background="@android:color/transparent"
             app:itemIconTint="@drawable/bottom_bar_colors"
             app:menu="@menu/bottom_menu"
+
 
             />
 
@@ -54,6 +61,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/secondary_blue"
         android:contentDescription="TODO"
+        android:layout_marginBottom="0dp"
         android:src="@drawable/add"
         app:layout_anchor="@id/bottomAppBar"
 
@@ -62,7 +70,9 @@
     <FrameLayout
         android:id="@+id/main_frag"
         android:layout_width="match_parent"
-        android:layout_height="580dp">
+        android:layout_height="430dp"
+        app:layout_anchor="@+id/main_frag"
+        app:layout_anchorGravity="center">
 
     </FrameLayout>
 

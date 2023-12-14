@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
 
         //BottomBar which display different fragment depends on user's action
         val bottomNavigationView: BottomNavigationView = binding.bottomNavigationView
+        bottomNavigationView.getMenu().findItem(R.id.home).setChecked(true)
+
 
         bottomNavigationView.setOnItemSelectedListener {
 
@@ -69,6 +71,11 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
                     loadFragment(Profile())
                     true
                 }
+                R.id.home ->{
+                    loadFragment(Home())
+                    true
+                }
+
                 else -> false
 
             }
@@ -89,6 +96,9 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
     //function to display fragments
     private  fun loadFragment(fragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()
+        transaction.setReorderingAllowed(true)
+        transaction.addToBackStack(null)
+
         transaction.replace(binding.mainFrag.id,fragment)
         transaction.commit()
     }

@@ -7,12 +7,7 @@
         android:title=""
         android:icon="@drawable/self_improvement"
         app:showAsAction="ifRoom"
-        android:checked="false"
-
-
-
-
-         />
+/>
     <item android:id="@+id/reaction"
         android:title=""
         android:icon="@drawable/add_reaction"
@@ -20,10 +15,14 @@
 
         />
 
-    <item android:id="@+id/palceholder"
+    <item android:id="@+id/home"
         android:title=""
+        android:icon="@drawable/home"
+        app:showAsAction="ifRoom"
+
 
         />
+
 
     <item android:id="@+id/call"
         android:title=""
