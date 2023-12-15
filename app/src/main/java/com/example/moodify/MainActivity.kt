@@ -86,10 +86,6 @@ class MainActivity : AppCompatActivity() {
 
 
         }
-
-
-
-
         // display new entry fragment
         binding.btnAddEntry.setOnClickListener {
             loadFragment(NewEntryFragment())
@@ -130,6 +126,8 @@ class MainActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         checkUser()
     }
+
+    // check if there's a logged in user
     fun checkUser() {
         val currentUser = auth.currentUser
         if (currentUser == null){
@@ -137,6 +135,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         } else {
             binding.helloWorld.text = "Welcome, " + auth.currentUser!!.email
+            loadFragment(Home())
         }
     }
 }
