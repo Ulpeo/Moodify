@@ -1,5 +1,6 @@
 package com.example.moodify
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity(), Login.Callbacks {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater)}
@@ -129,75 +130,13 @@ class MainActivity : AppCompatActivity(), Login.Callbacks {
         // Check if user is signed in (non-null) and update UI accordingly.
         checkUser()
     }
-
     fun checkUser() {
         val currentUser = auth.currentUser
-        if (currentUser != null) {
-            binding.helloWorld.text = currentUser.email
-            loadFragment(GetEventFragment())
+        if (currentUser == null){
+            val intent = Intent(this,LoginActivity::class.java)
+            startActivity(intent)
         } else {
-            binding.helloWorld.text = "Hello World!"
-            loadFragment(Login())
+            binding.helloWorld.text = "Welcome, " + auth.currentUser!!.email
         }
-    }
-
-    override fun createAccount(email: String, password: String) {
-        if(email == null || email == "" || password == null || password == "") {
-            Toast.makeText(
-                baseContext,
-                "Make sure to fill in your login information correctly.",
-                Toast.LENGTH_SHORT,
-            ).show()
-            return
-        }
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("ITM", "createUserWithEmail:success")
-                    val user = auth.currentUser
-                    loadFragment(GetEventFragment())
-                    binding.helloWorld.text = "New User: ${user?.email ?: "No user!"}"
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("ITM", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    binding.helloWorld.text = "Fail!"
-                }
-            }
-    }
-
-    override fun signIn(email: String, password: String) {
-        if(email == null || email == "" || password == null || password == "") {
-            Toast.makeText(
-                baseContext,
-                "Make sure to fill in your login information correctly.",
-                Toast.LENGTH_SHORT,
-            ).show()
-            return
-        }
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("ITM", "signInWithEmail:success")
-                    val user = auth.currentUser
-                    loadFragment(GetEventFragment())
-                    binding.helloWorld.text = "Current User: ${user?.email ?: "No User!"}"
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("ITM", "signInWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    binding.helloWorld.text = "Fail!"
-                }
-            }
     }
 }
