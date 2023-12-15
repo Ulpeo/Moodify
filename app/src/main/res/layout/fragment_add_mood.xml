@@ -5,18 +5,154 @@
     android:id="@+id/addMood_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFDE7"
     tools:context=".addMood">
+
+    <ImageButton
+        android:id="@+id/anxious"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/anxious_mood"
+        android:src="@drawable/anxious"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:tint="@color/red" />
+
+    <ImageButton
+        android:id="@+id/sad"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/sad_mood"
+        android:src="@drawable/sad"
+        app:layout_constraintBottom_toBottomOf="@+id/anxious"
+        app:layout_constraintStart_toEndOf="@+id/anxious"
+        app:layout_constraintTop_toTopOf="@+id/anxious"
+        app:layout_constraintVertical_bias="1.0"
+        app:tint="@color/orange" />
+
+    <ImageButton
+        android:id="@+id/soso"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/soso_mood"
+        android:src="@drawable/soso"
+        app:layout_constraintBottom_toBottomOf="@+id/sad"
+        app:layout_constraintStart_toEndOf="@+id/sad"
+        app:layout_constraintTop_toTopOf="@+id/sad"
+        app:tint="@color/yellow" />
+
+    <ImageButton
+        android:id="@+id/good"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/good_mood"
+        android:src="@drawable/good"
+        app:layout_constraintBottom_toBottomOf="@+id/soso"
+        app:layout_constraintStart_toEndOf="@+id/soso"
+        app:layout_constraintTop_toTopOf="@+id/soso"
+        app:layout_constraintVertical_bias="0.0"
+        app:tint="@color/secondary_blue" />
+
+    <ImageButton
+        android:id="@+id/happy"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/happy_mood"
+        android:src="@drawable/happy"
+        app:layout_constraintBottom_toBottomOf="@+id/good"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/good"
+        app:layout_constraintTop_toTopOf="@+id/good"
+        app:layout_constraintVertical_bias="0.0"
+        app:tint="@color/green" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/rectangle_13"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="72dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/lennie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="354dp"
-        android:layout_marginEnd="155dp"
-        android:text="Add your mood"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="How do you feel today ?"
+        android:textColor="@color/dark_blue"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anxious"
+        app:layout_constraintEnd_toEndOf="@+id/anxious"
+        app:layout_constraintStart_toStartOf="@+id/anxious"
+        app:layout_constraintTop_toBottomOf="@+id/anxious" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sad"
+        app:layout_constraintEnd_toEndOf="@+id/sad"
+        app:layout_constraintStart_toStartOf="@+id/sad"
+        app:layout_constraintTop_toBottomOf="@+id/sad" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="Soso"
+        app:layout_constraintEnd_toEndOf="@+id/soso"
+        app:layout_constraintStart_toStartOf="@+id/soso"
+        app:layout_constraintTop_toBottomOf="@+id/soso" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Good"
+        app:layout_constraintEnd_toStartOf="@+id/happy"
+        app:layout_constraintStart_toStartOf="@+id/good"
+        app:layout_constraintTop_toBottomOf="@+id/good" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Happy"
+        app:layout_constraintEnd_toEndOf="@+id/happy"
+        app:layout_constraintStart_toStartOf="@+id/happy"
+        app:layout_constraintTop_toBottomOf="@+id/happy" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,7 +32,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="314dp"
         android:layout_height="106dp"
-        android:layout_marginBottom="312dp"
+        android:layout_marginBottom="372dp"
         android:orientation="horizontal"
         android:outlineAmbientShadowColor="#000000"
         android:outlineSpotShadowColor="#000000"

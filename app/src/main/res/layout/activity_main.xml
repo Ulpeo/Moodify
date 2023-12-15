@@ -27,7 +27,7 @@
         app:fabCradleMargin="0dp"
         app:fabCradleRoundedCornerRadius="0dp"
         app:fabCradleVerticalOffset="10dp"
-        tools:ignore="BottomAppBar,MissingConstraints"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="669dp"
 
@@ -62,8 +62,8 @@
 
     <FrameLayout
         android:id="@+id/main_frag"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="401dp"
+        android:layout_height="672dp"
         android:layout_above="@id/bottomAppBar"
         app:layout_anchor="@+id/main_frag"
         app:layout_anchorGravity="center">
