@@ -15,12 +15,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.Date
+import android.util.Log
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 lateinit var binding: FragmentNewEntryBinding
+lateinit var diaryDB: DiaryDB
+lateinit var moodsDB: MoodsDB
+lateinit var mAuth: FirebaseAuth
+lateinit var auth: FirebaseAuth
 
 /**
  * A simple [Fragment] subclass.
@@ -31,6 +37,9 @@ class NewEntryFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val date: String
+        get() = requireArguments().getString("DATE")
+            ?: throw IllegalArgumentException("Argument date required")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,16 +53,34 @@ class NewEntryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         binding = FragmentNewEntryBinding.inflate(inflater, container, false)
 
-        // get or instantiate DiaryDB
-        val diaryDB = DiaryDB.getInstance(this.requireActivity())
-        val moodsDB = MoodsDB.getInstance(this.requireActivity())
+        diaryDB = DiaryDB.getInstance(this.requireActivity())
+        moodsDB = MoodsDB.getInstance(this.requireActivity())
 
         // firebase
-        var mAuth = FirebaseAuth.getInstance()
-        var auth = Firebase.auth
+        mAuth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
+
+        // Initialize datePicker
+        if(date != null) {
+            var dateSplit = date.split("/")
+            binding.entryDate.updateDate(dateSplit[0].toInt(), dateSplit[1].toInt(), dateSplit[2].toInt())
+        }
+
+        // Display existing entry if applicable
+        GlobalScope.launch(Dispatchers.IO) {
+            var dateSplit = date.split("/")
+            var dateConverted = dateSplit[0] + "/" + (dateSplit[1].toInt() + 1).toString() + "/" + dateSplit[2]
+            if(diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, date) != null) {
+                Log.d("Test", diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, date).dailyGratitude)
+                binding.dailyGratitude.setText("hiiii", TextView.BufferType.EDITABLE)
+                binding.freeExpression.setText("xxx", TextView.BufferType.EDITABLE)
+            }
+        }
+
 
         with(binding) {
             btnSaveEntry.setOnClickListener {

@@ -1,34 +1,26 @@
 package com.example.moodify
 
+//google dependencies
+
+// for Firebase
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageButton
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moodify.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
-//google dependencies
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-
-// for Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Home.Callbacks {
 
     private lateinit var auth: FirebaseAuth
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater)}
+    lateinit var diaryDB: DiaryDB
     override fun onCreate(savedInstanceState: Bundle?) {
         FirebaseApp.initializeApp(this)
         super.onCreate(savedInstanceState)
@@ -137,5 +129,13 @@ class MainActivity : AppCompatActivity() {
             binding.helloWorld.text = "Welcome, " + auth.currentUser!!.email
             loadFragment(Home())
         }
+    }
+
+    override fun todaysEntry(date: String) {
+        val bundle = Bundle()
+        bundle.putString("DATE", date)
+        var frag = NewEntryFragment()
+        frag.setArguments(bundle)
+        loadFragment(frag)
     }
 }

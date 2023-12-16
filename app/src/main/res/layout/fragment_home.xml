@@ -31,7 +31,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="314dp"
-        android:layout_height="106dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="372dp"
         android:orientation="horizontal"
         android:outlineAmbientShadowColor="#000000"
@@ -71,4 +71,14 @@ Click on the +"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+    <CalendarView
+        android:id="@+id/calendarHome"
+        android:layout_width="278dp"
+        android:layout_height="286dp"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

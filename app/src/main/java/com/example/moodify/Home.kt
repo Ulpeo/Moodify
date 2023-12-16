@@ -25,6 +25,7 @@ import com.example.moodify.util.Constants.REQUEST_PERMISSION_GET_ACCOUNTS
 import com.example.moodify.util.executeAsyncTask
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.material.snackbar.Snackbar
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException
@@ -38,6 +39,9 @@ import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventDateTime
 import kotlinx.coroutines.cancel
 import pub.devrel.easypermissions.EasyPermissions
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.temporal.ChronoField
 import java.util.Date
 
 
@@ -51,6 +55,12 @@ class Home : Fragment() {
     private var mService: Calendar? = null
 
     var mProgress: ProgressDialog? = null
+
+    lateinit var callback: Callbacks
+
+    interface Callbacks{
+        fun todaysEntry(date: String)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +77,18 @@ class Home : Fragment() {
 
         initView()
 
+        binding.calendarHome.date = System.currentTimeMillis()
+
+        binding.calendarHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            callback.todaysEntry(year.toString() + "/" + month.toString() + "/" + dayOfMonth.toString())
+        }
+
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = context as Callbacks
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
