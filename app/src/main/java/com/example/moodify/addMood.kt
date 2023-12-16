@@ -6,8 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import com.example.moodify.databinding.FragmentAddMoodBinding
 import com.example.moodify.databinding.FragmentMeditateBinding
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +34,9 @@ class addMood : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentAddMoodBinding
+    lateinit var moodsDB: MoodsDB
+    lateinit var mAuth: FirebaseAuth
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +52,36 @@ class addMood : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentAddMoodBinding.inflate(inflater, container, false)
-        Log.d("ITM",param1+param2)
+
+        with(binding) {
+            anxious.setOnClickListener {
+                saveMood("Anxious")
+            }
+
+            sad.setOnClickListener {
+                saveMood("Sad")
+            }
+
+            soso.setOnClickListener {
+                saveMood("So so")
+            }
+
+            good.setOnClickListener {
+                saveMood("Good")
+            }
+
+            happy.setOnClickListener {
+                saveMood("Happy")
+            }
+        }
+
+        // get mood database instance
+        moodsDB = MoodsDB.getInstance(this.requireActivity())
+
+        // firebase
+        mAuth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
+
         return binding.root
     }
 
@@ -61,5 +103,30 @@ class addMood : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    fun saveMood(moodDescription: String) {
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val date = LocalDateTime.now().format(formatter)
+        GlobalScope.launch(Dispatchers.IO) {
+            if(moodsDB.moodDAO().getMood(auth.currentUser!!.email!!, date) != null) {
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    "Only one mood per day!", Snackbar.LENGTH_SHORT
+                ).show()
+            } else {
+                val mood = Mood(
+                    0,
+                    auth.currentUser!!.email!!,
+                    date,
+                    moodDescription
+                )
+
+                moodsDB.moodDAO().insert(mood)
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    "Entry saved!", Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }
