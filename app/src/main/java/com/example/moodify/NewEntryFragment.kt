@@ -198,6 +198,7 @@ class NewEntryFragment : Fragment() {
                     dailyGratitude.setText("")
                     freeExpression.setEnabled(true)
                     freeExpression.setText("")
+                    btnSaveEntry.text = "Save entry"
                 }
 
             }

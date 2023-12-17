@@ -76,14 +76,14 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        //initView()
+        initView()
 
 
-        /*binding.calendarHome.date = System.currentTimeMillis()
+        binding.calendarHome.date = System.currentTimeMillis()
 
         binding.calendarHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
             callback.todaysEntry(year.toString() + "/" + month.toString() + "/" + dayOfMonth.toString())
-        }*/
+        }
 
         return binding.root
     }
@@ -124,6 +124,7 @@ class Home : Fragment() {
     private fun initView() {
         mProgress = ProgressDialog(requireContext())
         mProgress!!.setMessage("Loading...")
+        initCredentials()
         getResultsFromApi()
     }
 
