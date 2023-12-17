@@ -23,8 +23,8 @@
 
             <DatePicker
                 android:id="@+id/entryDate"
-                android:layout_width="368dp"
-                android:layout_height="202dp"
+                android:layout_width="366dp"
+                android:layout_height="141dp"
                 android:layout_gravity="center"
                 android:background="#FFFFFF"
                 android:calendarViewShown="false"
@@ -34,6 +34,26 @@
                 android:theme="@style/CustomDatePickerTheme"
                 android:translationZ="-1dp"
                 android:visibility="visible" />
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/viewFinder"
+                android:layout_width="150dp"
+                android:layout_height="139dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/cameraButton"
+                android:layout_width="344dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="30dp"
+                android:contentDescription="photo button"
+                android:src="@drawable/photo"
+
+                app:tint="@color/dark_blue"
+                tools:src="@drawable/photo" />
 
             <EditText
                 android:id="@+id/dailyGratitude"

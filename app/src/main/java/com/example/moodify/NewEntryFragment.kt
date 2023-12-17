@@ -1,5 +1,8 @@
 package com.example.moodify
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,8 +21,17 @@ import java.util.Date
 import android.util.Log
 import android.widget.TextView
 import android.os.Looper
+import android.provider.MediaStore
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import java.io.File
+import java.util.logging.Logger.global
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +71,7 @@ class NewEntryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
         // Inflate the layout for this fragment
         binding = FragmentNewEntryBinding.inflate(inflater, container, false)
 
@@ -68,6 +81,9 @@ class NewEntryFragment : Fragment() {
         // firebase
         mAuth = FirebaseAuth.getInstance()
         auth = Firebase.auth
+
+
+
 
         // Initialize datePicker
         if(date != null) {
@@ -100,7 +116,8 @@ class NewEntryFragment : Fragment() {
                                 auth.currentUser!!.email!!,
                                 dateConverted,
                                 dailyGratitude.text.toString(),
-                                freeExpression.text.toString()
+                                freeExpression.text.toString(),
+                                //je veux ajouter mon image ici
                             )
                             diaryDB.diaryEntryDAO().insert(entry)
                             Snackbar.make(
@@ -136,7 +153,8 @@ class NewEntryFragment : Fragment() {
                             0,
                             auth.currentUser!!.email!!,
                             date,
-                            moodDescription
+                            moodDescription,
+
                         )
 
                         moodsDB.moodDAO().insert(mood)
@@ -265,4 +283,5 @@ class NewEntryFragment : Fragment() {
             }
         }
     }
+
 }

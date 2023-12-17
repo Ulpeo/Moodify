@@ -6,6 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.example.moodify.databinding.FragmentMeditateBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,7 +42,33 @@ class Meditate : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentMeditateBinding.inflate(inflater, container, false)
-        Log.d("ITM",param1+param2)
+
+
+        //display youtube video
+
+        val webView: WebView = binding.video1
+        webView.webViewClient = WebViewClient()
+        webView.loadUrl("https://youtu.be/krBvzDlL0mM")
+
+
+        /*webView.settings.javaScriptEnabled = true
+        webView.webChromeClient = WebChromeClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                view?.loadUrl(request?.url.toString())
+                return false
+            }
+        }
+
+        // Remplacez VIDEO_ID par l'identifiant de la vidéo YouTube que vous souhaitez afficher
+        val videoId = "krBvzDlL0mM"
+        val url = "https://youtu.be/krBvzDlL0mM"
+
+        webView.loadUrl(url)*/
+
         return binding.root
     }
 
