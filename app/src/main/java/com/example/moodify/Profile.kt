@@ -9,11 +9,20 @@ import android.view.ViewGroup
 import com.example.moodify.databinding.FragmentCallBinding
 import com.example.moodify.databinding.FragmentMeditateBinding
 import com.example.moodify.databinding.FragmentProfileBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+
+
 
 /**
  * A simple [Fragment] subclass.
@@ -25,6 +34,10 @@ class Profile : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentProfileBinding
+    private lateinit var auth: FirebaseAuth
+    lateinit var diaryDB: DiaryDB
+    lateinit var moodsDB: MoodsDB
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +45,62 @@ class Profile : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        diaryDB = DiaryDB.getInstance(this.requireActivity())
+        moodsDB = MoodsDB.getInstance(this.requireActivity())
+
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        Log.d("ITM",param1+param2)
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        var email = auth.currentUser!!.email
+
+        binding.Welcome.text=  "Welcome, $email"
+
+        /*var number_Entries = diaryDB.diaryEntryDAO().getNumberEntries(email)
+
+        if (number_entries > 1.toString()){
+            binding.numEntries.text= "You made $number_entries entries in your diary, keep going !"
+        }
+        else if (number_entries== "1"){
+            binding.numEntries.text = "Congrats for your first entry, keep going !"
+        }
+        else{
+            binding.numEntries.text = "Any entry yet, let's start !"
+        }*/
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val numberEntries = diaryDB.diaryEntryDAO().getNumberEntries(email)
+
+            withContext(Dispatchers.Main) {
+                updateUI(numberEntries)
+            }
+        }
+
         return binding.root
     }
+
+    private fun updateUI(numberEntries: String) {
+        var numberEntries = numberEntries.toInt()
+        if (numberEntries > 1) {
+            binding.numEntries.text = "You made $numberEntries entries in your diary, keep going!"
+        } else if (numberEntries == 1) {
+            binding.numEntries.text = "Congrats for your first entry, keep going!"
+        } else {
+            binding.numEntries.text = "No entries yet, let's start!"
+        }
+    }
+
+
 
     companion object {
         /**

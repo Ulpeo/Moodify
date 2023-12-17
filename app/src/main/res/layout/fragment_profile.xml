@@ -8,15 +8,59 @@
     tools:context=".Profile">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:layout_width="157dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="127dp"
-        android:layout_marginTop="345dp"
-        android:layout_marginEnd="127dp"
-        android:text="update your profile"
+        android:id="@+id/Welcome"
+        android:layout_width="236dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12dp"
+        android:text="Welcome"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.403"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="191dp"
+        android:layout_height="136dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/lennie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.408"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/EditPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:text="Edit my password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numEntries" />
+
+    <Button
+        android:id="@+id/Delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Delete my account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditPassword" />
+
+    <TextView
+        android:id="@+id/numEntries"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/Welcome"
+        app:layout_constraintStart_toStartOf="@+id/Welcome"
+        app:layout_constraintTop_toBottomOf="@+id/Welcome" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

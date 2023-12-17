@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity(), Home.Callbacks {
             val intent = Intent(this,LoginActivity::class.java)
             startActivity(intent)
         } else {
-            binding.helloWorld.text = "Welcome, " + auth.currentUser!!.email
+            /*binding.helloWorld.text = "Welcome, " + auth.currentUser!!.email*/
             loadFragment(Home())
         }
     }

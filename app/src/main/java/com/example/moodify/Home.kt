@@ -64,9 +64,10 @@ class Home : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("ITM", "coucou je suis là")
-        initCredentials()
+
+
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,13 +76,14 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        initView()
+        //initView()
 
-        binding.calendarHome.date = System.currentTimeMillis()
+
+        /*binding.calendarHome.date = System.currentTimeMillis()
 
         binding.calendarHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
             callback.todaysEntry(year.toString() + "/" + month.toString() + "/" + dayOfMonth.toString())
-        }
+        }*/
 
         return binding.root
     }

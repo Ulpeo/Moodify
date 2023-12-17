@@ -28,4 +28,8 @@ interface DiaryEntryDAO {
     // get a specific diary entry
     @Query("SELECT * FROM diary_entries WHERE userEmail = :userEmail AND date = :entryDate")
     fun getEntry(userEmail: String, entryDate: String): DiaryEntry
+
+    //get the number of entries by a person
+    @Query("SELECT COUNT(*) FROM diary_entries WHERE userEmail = :userEmail")
+    fun getNumberEntries(userEmail: String?): String
 }
