@@ -125,6 +125,7 @@ class NewEntryFragment : Fragment() {
                             "Only one mood per day!", Snackbar.LENGTH_SHORT
                         ).show()
                     } else {
+
                         val checkedMood = moodSelect.checkedRadioButtonId
                         val selectedRadioButton = requireActivity().findViewById(checkedMood) as RadioButton
                         val moodDescription = selectedRadioButton.text.toString()

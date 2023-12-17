@@ -61,22 +61,23 @@
                 android:layout_marginTop="20dp"
                 android:text="Save entry" />
 
-            <RadioGroup
-                android:id="@+id/moodSelect"
-                android:layout_width="328dp"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:gravity="center">
+                android:orientation="horizontal">
+
 
                 <LinearLayout
-                    android:layout_width="273dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView7"
-                        android:layout_width="87dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="0dp"
                         android:layout_weight="1"
@@ -84,20 +85,56 @@
                         app:tint="@color/red"
                         tools:src="@drawable/anxious" />
 
-                    <RadioButton
-                        android:id="@+id/moodAnxious"
-                        android:layout_width="87dp"
-                        android:layout_height="wrap_content"
-                        android:text="Anxious" />
-
                     <ImageView
                         android:id="@+id/imageView8"
-                        android:layout_width="87dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:src="@drawable/sad"
                         app:tint="@color/orange"
                         tools:src="@drawable/sad" />
+
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/soso"
+                        app:tint="@color/yellow"
+                        tools:src="@drawable/soso" />
+
+                    <ImageView
+                        android:id="@+id/imageView10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/good"
+                        app:tint="@color/dark_blue"
+                        tools:src="@drawable/good" />
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/happy"
+                        app:tint="@color/green"
+                        tools:src="@drawable/happy" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/moodSelect"
+                    android:layout_width="164dp"
+                    android:layout_height="254dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center">
+
+                    <RadioButton
+                        android:id="@+id/moodAnxious"
+                        android:layout_width="87dp"
+                        android:layout_height="wrap_content"
+                        android:text="Anxious" />
 
                     <RadioButton
                         android:id="@+id/moodSad"
@@ -105,36 +142,11 @@
                         android:layout_height="wrap_content"
                         android:text="Sad" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="273dp"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView9"
-                        android:layout_width="87dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/soso"
-                        app:tint="@color/yellow"
-                        tools:src="@drawable/soso" />
-
                     <RadioButton
                         android:id="@+id/moodSoso"
                         android:layout_width="87dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="So so" />
-
-                    <ImageView
-                        android:id="@+id/imageView10"
-                        android:layout_width="87dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/good"
-                        app:tint="@color/dark_blue"
-                        tools:src="@drawable/good" />
 
                     <RadioButton
                         android:id="@+id/moodGood"
@@ -142,30 +154,15 @@
                         android:layout_height="wrap_content"
                         android:text="Good" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="273dp"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView11"
-                        android:layout_width="87dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/happy"
-                        app:tint="@color/green"
-                        tools:src="@drawable/happy" />
-
                     <RadioButton
                         android:id="@+id/moodHappy"
-                        android:layout_width="147dp"
+                        android:layout_width="87dp"
                         android:layout_height="wrap_content"
                         android:text="Happy" />
-                </LinearLayout>
 
-            </RadioGroup>
+                </RadioGroup>
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/btnSaveMood"
