@@ -1,14 +1,14 @@
 package com.example.moodify
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.moodify.databinding.FragmentCallBinding
-import com.example.moodify.databinding.FragmentMeditateBinding
 import com.example.moodify.databinding.FragmentProfileBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -45,8 +45,6 @@ class Profile : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
     }
 
     override fun onCreateView(
@@ -84,6 +82,23 @@ class Profile : Fragment() {
             withContext(Dispatchers.Main) {
                 updateUI(numberEntries)
             }
+        }
+
+        binding.Delete.setOnClickListener {
+            val user = Firebase.auth.currentUser!!
+
+            user.delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Firebase Auth", "User account deleted.")
+                        Snackbar.make(
+                            requireActivity().findViewById(android.R.id.content),
+                            "User account deleted. Goodbye!", Snackbar.LENGTH_SHORT
+                        ).show()
+                        val intent = Intent(requireActivity(),LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
         }
 
         return binding.root
