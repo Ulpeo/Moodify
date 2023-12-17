@@ -17,8 +17,8 @@ interface MoodDAO {
     fun delete(mood: Mood)
 
     // get all diary entries
-    @Query("SELECT * FROM mood")
-    fun getAll(): List<Mood>
+    @Query("SELECT * FROM mood WHERE userEmail = :userEmail")
+    fun getAll(userEmail: String): List<Mood>
 
     // get a specific diary entry
     @Query("SELECT * FROM mood WHERE userEmail = :userEmail AND date = :moodDate")

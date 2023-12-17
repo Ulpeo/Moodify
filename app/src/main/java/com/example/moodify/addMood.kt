@@ -1,14 +1,14 @@
 package com.example.moodify
 
+import android.R
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
+import android.webkit.WebView
+import androidx.fragment.app.Fragment
 import com.example.moodify.databinding.FragmentAddMoodBinding
-import com.example.moodify.databinding.FragmentMeditateBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -18,11 +18,21 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import android.webkit.JavascriptInterface
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import java.util.Objects
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+var anxious = 0
+var soso = 0
+var sad = 0
+var happy = 0
+var good = 0
 
 /**
  * A simple [Fragment] subclass.
@@ -82,6 +92,39 @@ class addMood : Fragment() {
         mAuth = FirebaseAuth.getInstance()
         auth = Firebase.auth
 
+        // for Google charts
+        GlobalScope.async(Dispatchers.IO) {
+            val job: Job = launch(context = Dispatchers.Default) {
+                var allData = moodsDB.moodDAO().getAll(auth.currentUser!!.email!!)
+                anxious = 0
+                soso = 0
+                sad = 0
+                happy = 0
+                good = 0
+                for (m in allData) {
+                    if (m.mood == "Anxious") {
+                        anxious += 1
+                    } else if (m.mood == "Soso") {
+                        soso += 1
+                    }
+                    else if (m.mood == "Sad") {
+                        sad += 1
+                    } else if (m.mood == "Happy") {
+                        happy += 1
+                    } else if (m.mood == "Good") {
+                        good += 1
+                    }
+                }
+            }
+            job.join()
+        }
+
+        var webView = binding.pieChart
+        webView.addJavascriptInterface(WebAppInterface(), "Android")
+
+        webView.getSettings().setJavaScriptEnabled(true)
+        webView.loadUrl("file:///android_asset/chart.html")
+
         return binding.root
     }
 
@@ -127,6 +170,33 @@ class addMood : Fragment() {
                     "Entry saved!", Snackbar.LENGTH_SHORT
                 ).show()
             }
+        }
+    }
+
+    class WebAppInterface {
+        @JavascriptInterface
+        fun getAnxious(): Int {
+            return anxious
+        }
+
+        @JavascriptInterface
+        fun getSoso(): Int {
+            return soso
+        }
+
+        @JavascriptInterface
+        fun getSad(): Int {
+            return sad
+        }
+
+        @JavascriptInterface
+        fun getHappy(): Int {
+            return happy
+        }
+
+        @JavascriptInterface
+        fun getGood(): Int {
+            return good
         }
     }
 }
