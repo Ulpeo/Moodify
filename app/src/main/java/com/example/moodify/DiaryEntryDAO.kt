@@ -5,12 +5,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface DiaryEntryDAO {
     // insert method
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entry: DiaryEntry)
+
+    // update method
+    @Update
+    fun update(entry: DiaryEntry)
 
     // delete method
     @Delete

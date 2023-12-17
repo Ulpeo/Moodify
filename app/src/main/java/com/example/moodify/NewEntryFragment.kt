@@ -17,6 +17,9 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import android.util.Log
 import android.widget.TextView
+import android.os.Looper
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +30,7 @@ lateinit var diaryDB: DiaryDB
 lateinit var moodsDB: MoodsDB
 lateinit var mAuth: FirebaseAuth
 lateinit var auth: FirebaseAuth
+var entry: DiaryEntry? = null
 
 /**
  * A simple [Fragment] subclass.
@@ -70,43 +74,45 @@ class NewEntryFragment : Fragment() {
             binding.entryDate.updateDate(dateSplit[0].toInt(), dateSplit[1].toInt(), dateSplit[2].toInt())
         }
 
-        // Display existing entry if applicable
-        GlobalScope.launch(Dispatchers.IO) {
-            var dateSplit = date.split("/")
-            var dateConverted = dateSplit[0] + "/" + (dateSplit[1].toInt() + 1).toString() + "/" + dateSplit[2]
-            if(diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, date) != null) {
-                Log.d("Test", diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, date).dailyGratitude)
-                binding.dailyGratitude.setText("hiiii", TextView.BufferType.EDITABLE)
-                binding.freeExpression.setText("xxx", TextView.BufferType.EDITABLE)
-            }
-        }
-
+        // display the entry if one already exists for that user and date
+        displayEntry(date, true)
 
         with(binding) {
             btnSaveEntry.setOnClickListener {
-                GlobalScope.launch(Dispatchers.IO) {
-                    val date = (entryDate.year).toString() + "/" + (entryDate.month + 1).toString() + "/" + entryDate.dayOfMonth
-                    if(diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, date) != null) {
-                        Snackbar.make(
-                            requireActivity().findViewById(android.R.id.content),
-                            "Only one entry per day!", Snackbar.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        val entry = DiaryEntry(
-                            0,
-                            auth.currentUser!!.email!!,
-                            date,
-                            dailyGratitude.text.toString(),
-                            freeExpression.text.toString()
-                        )
-
-                        diaryDB.diaryEntryDAO().insert(entry)
+                if(btnSaveEntry.text == "Save entry") {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val dateConverted = (entryDate.year).toString() + "/" + (entryDate.month + 1).toString() + "/" + entryDate.dayOfMonth
+                        var existingEntry = diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, dateConverted)
+                        if(existingEntry != null) {
+                            existingEntry.dailyGratitude = dailyGratitude.text.toString()
+                            existingEntry.freeExpression = freeExpression.text.toString()
+                            diaryDB.diaryEntryDAO().update(existingEntry)
+                            Snackbar.make(
+                                requireActivity().findViewById(android.R.id.content),
+                                "Entry updated!", Snackbar.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            val entry = DiaryEntry(
+                                0,
+                                auth.currentUser!!.email!!,
+                                dateConverted,
+                                dailyGratitude.text.toString(),
+                                freeExpression.text.toString()
+                            )
+                            diaryDB.diaryEntryDAO().insert(entry)
+                            Snackbar.make(
+                                requireActivity().findViewById(android.R.id.content),
+                                "Entry saved!", Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } else {
+                    with(binding) {
+                        dailyGratitude.setEnabled(true)
+                        freeExpression.setEnabled(true)
+                        btnSaveEntry.text = "Save entry"
                     }
                 }
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    "Entry saved!", Snackbar.LENGTH_SHORT
-                ).show()
             }
 
             btnSaveMood.setOnClickListener {
@@ -137,6 +143,10 @@ class NewEntryFragment : Fragment() {
                     }
                 }
             }
+
+            entryDate.setOnDateChangedListener { view, year, month, dayOfMonth ->
+                displayEntry(year.toString() + "/" + month.toString() + "/" + dayOfMonth.toString(), false)
+            }
         }
 
 
@@ -161,5 +171,36 @@ class NewEntryFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    fun displayEntry(queryDate: String, createLooper: Boolean) {
+        // Display existing entry if applicable
+        GlobalScope.async(Dispatchers.Main) {
+            val job: Job = launch(context = Dispatchers.Default) {
+                var dateSplit = queryDate.split("/")
+                var dateConverted = dateSplit[0] + "/" + (dateSplit[1].toInt() + 1).toString() + "/" + dateSplit[2]
+                entry = diaryDB.diaryEntryDAO().getEntry(auth.currentUser!!.email!!, dateConverted)
+            }
+            job.join()
+            if(entry != null) {
+                with(binding) {
+                    dailyGratitude.setEnabled(false)
+                    dailyGratitude.setText(entry?.dailyGratitude ?: "")
+                    freeExpression.setEnabled(false)
+                    freeExpression.setText(entry?.freeExpression ?: "")
+                    btnSaveEntry.text = "Edit entry"
+                }
+            } else {
+                with(binding) {
+                    dailyGratitude.setEnabled(true)
+                    dailyGratitude.setText("")
+                    freeExpression.setEnabled(true)
+                    freeExpression.setText("")
+                }
+
+            }
+        }
+
+
     }
 }
