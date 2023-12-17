@@ -102,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Next appointment" />
+
             </LinearLayout>
 
             <CalendarView
@@ -113,8 +114,56 @@
                 android:scaleY="0.9"
                 android:dateTextAppearance="@color/dark_blue"
                 android:weekDayTextAppearance="@color/dark_blue"
-                
+
                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/newEventTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="New Event Title"
+                    android:inputType="text" />
+
+                <DatePicker
+                    android:id="@+id/newEventStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="108dp"
+                    android:background="#FFFFFF"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:translationZ="-1dp"
+                    android:visibility="visible" />
+
+                <TimePicker
+                    android:id="@+id/newEventStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="77dp"
+                    android:background="#FFFFFF"
+                    android:contextClickable="true"
+                    android:focusable="auto"
+                    android:focusableInTouchMode="true"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:screenReaderFocusable="true"
+                    android:timePickerMode="spinner"
+                    android:translationZ="-1dp"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/btnNewEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Button" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

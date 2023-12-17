@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.moodify.databinding.FragmentGetEventBinding
@@ -83,6 +84,10 @@ class Home : Fragment() {
 
         binding.calendarHome.setOnDateChangeListener { view, year, month, dayOfMonth ->
             callback.todaysEntry(year.toString() + "/" + month.toString() + "/" + dayOfMonth.toString())
+        }
+
+        binding.btnNewEvent.setOnClickListener {
+            makeInsertTask()
         }
 
         return binding.root
@@ -309,5 +314,85 @@ class Home : Fragment() {
                 }
             }
         )
+    }
+
+    private fun makeInsertTask() {
+        var mLastError: Exception? = null
+
+        lifecycleScope.executeAsyncTask(
+            onStart = {
+                mProgress!!.show()
+            },
+            doInBackground = {
+                try {
+                    insertEvent()
+                } catch (e: Exception) {
+                    mLastError = e
+                    Log.d("ITM", "Tried to insert, but: $e")
+                    lifecycleScope.cancel()
+                    null
+                }
+            },
+            onPostExecute = { output ->
+                mProgress!!.hide()
+                binding.newEventTitle.setText("", TextView.BufferType.EDITABLE)
+            },
+            onCancelled = {
+                mProgress!!.hide()
+                if (mLastError != null) {
+                    if (mLastError is GooglePlayServicesAvailabilityIOException) {
+                        showGooglePlayServicesAvailabilityErrorDialog(
+                            (mLastError as GooglePlayServicesAvailabilityIOException)
+                                .connectionStatusCode
+                        )
+                    } else if (mLastError is UserRecoverableAuthIOException) {
+                        this.startActivityForResult(
+                            (mLastError as UserRecoverableAuthIOException).intent,
+                            REQUEST_AUTHORIZATION
+                        )
+                    } else {
+                        Log.d("Google Calendar", "Error on insert cancelled:\n" + mLastError!!.message)
+                    }
+                } else {
+                    Log.d("Google Calendar", "Insert cancelled.")
+                }
+            }
+        )
+    }
+
+    fun insertEvent() {
+        with(binding) {
+            val startDateTime = DateTime(Date(
+                newEventStartDate.year - 1900,
+                newEventStartDate.month,
+                newEventStartDate.dayOfMonth,
+                newEventStartTime.hour,
+                newEventStartTime.minute
+            ))
+            val start = EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone("Asia/Seoul")
+
+            val endDateTime = DateTime(Date(
+                newEventStartDate.year - 1900,
+                newEventStartDate.month,
+                newEventStartDate.dayOfMonth,
+                newEventStartTime.hour + 2,
+                newEventStartTime.minute
+            ))
+            val end = EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone("Asia/Seoul")
+
+            var event: Event = Event()
+                .setSummary(newEventTitle.text.toString())
+                .setStart(start)
+                .setEnd(end)
+
+            Log.d("Google Calendar", "New event: $event")
+
+            mService!!.events().insert("primary", event).execute()
+        }
+        makeRequestTask()
     }
 }
