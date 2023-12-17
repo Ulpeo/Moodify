@@ -124,11 +124,17 @@
 
                 <EditText
                     android:id="@+id/newEventTitle"
-                    android:layout_width="match_parent"
+                    android:layout_width="294dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/dark_blue"
                     android:ems="10"
                     android:hint="New Event Title"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:outlineSpotShadowColor="@color/dark_blue"
+                    android:textColor="@color/dark_blue"
+                    android:textColorHint="@color/secondary_blue"
+                    android:textCursorDrawable="@color/secondary_blue" />
 
                 <DatePicker
                     android:id="@+id/newEventStartDate"
@@ -140,7 +146,8 @@
                     android:scaleX=".5"
                     android:scaleY=".5"
                     android:translationZ="-1dp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:theme="@style/CustomDatePickerTheme"/>
 
                 <TimePicker
                     android:id="@+id/newEventStartTime"
@@ -155,13 +162,15 @@
                     android:screenReaderFocusable="true"
                     android:timePickerMode="spinner"
                     android:translationZ="-1dp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:theme="@style/CustomDatePickerTheme"/>
 
                 <Button
                     android:id="@+id/btnNewEvent"
-                    android:layout_width="match_parent"
+                    android:layout_width="281dp"
                     android:layout_height="wrap_content"
-                    android:text="Button" />
+                    android:layout_gravity="center"
+                    android:text="Save Entry" />
 
             </LinearLayout>
 
