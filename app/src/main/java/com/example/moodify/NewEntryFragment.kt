@@ -31,6 +31,7 @@ lateinit var moodsDB: MoodsDB
 lateinit var mAuth: FirebaseAuth
 lateinit var auth: FirebaseAuth
 var entry: DiaryEntry? = null
+var mood: Mood? = null
 
 /**
  * A simple [Fragment] subclass.
@@ -76,7 +77,8 @@ class NewEntryFragment : Fragment() {
         }
 
         // display the entry if one already exists for that user and date
-        displayEntry(date, true)
+        displayEntry(date)
+        displayMood(date)
 
         with(binding) {
             btnSaveEntry.setOnClickListener {
@@ -147,7 +149,9 @@ class NewEntryFragment : Fragment() {
             }
 
             entryDate.setOnDateChangedListener { view, year, month, dayOfMonth ->
-                displayEntry(year.toString() + "/" + month.toString() + "/" + dayOfMonth.toString(), false)
+                var queryDate = year.toString() + "/" + month.toString() + "/" + dayOfMonth.toString()
+                displayEntry(queryDate)
+                displayMood(queryDate)
             }
         }
 
@@ -175,7 +179,7 @@ class NewEntryFragment : Fragment() {
             }
     }
 
-    fun displayEntry(queryDate: String, createLooper: Boolean) {
+    fun displayEntry(queryDate: String) {
         // Display existing entry if applicable
         GlobalScope.async(Dispatchers.Main) {
             val job: Job = launch(context = Dispatchers.Default) {
@@ -200,10 +204,65 @@ class NewEntryFragment : Fragment() {
                     freeExpression.setText("")
                     btnSaveEntry.text = "Save entry"
                 }
-
             }
         }
+    }
 
-
+    fun displayMood(queryDate: String) {
+        // Display existing entry if applicable
+        GlobalScope.async(Dispatchers.Main) {
+            val job: Job = launch(context = Dispatchers.Default) {
+                var dateSplit = queryDate.split("/")
+                var dateConverted = dateSplit[0] + "/" + (dateSplit[1].toInt() + 1).toString() + "/" + dateSplit[2]
+                mood = moodsDB.moodDAO().getMood(auth.currentUser!!.email!!, dateConverted)
+            }
+            job.join()
+            if(mood != null && mood!!.mood != null) {
+                with(binding) {
+                    if (mood!!.mood == "Anxious") {
+                        moodAnxious.isChecked = true
+                        moodHappy.isChecked = false
+                        moodSad.isChecked = false
+                        moodGood.isChecked = false
+                        moodSoso.isChecked = false
+                    } else if (mood!!.mood == "So so") {
+                        moodSoso.isChecked = true
+                        moodAnxious.isChecked = false
+                        moodHappy.isChecked = false
+                        moodSad.isChecked = false
+                        moodGood.isChecked = false
+                    }
+                    else if (mood!!.mood == "Sad") {
+                        moodSad.isChecked = true
+                        moodAnxious.isChecked = false
+                        moodHappy.isChecked = false
+                        moodGood.isChecked = false
+                        moodSoso.isChecked = false
+                    } else if (mood!!.mood == "Happy") {
+                        moodHappy.isChecked = true
+                        moodAnxious.isChecked = false
+                        moodSad.isChecked = false
+                        moodGood.isChecked = false
+                        moodSoso.isChecked = false
+                    } else if (mood!!.mood == "Good") {
+                        moodGood.isChecked = true
+                        moodAnxious.isChecked = false
+                        moodHappy.isChecked = false
+                        moodSad.isChecked = false
+                        moodSoso.isChecked = false
+                    }
+                    btnSaveMood.text = "Edit mood"
+                }
+            } else {
+                with(binding) {
+                    moodAnxious.isChecked = false
+                    moodHappy.isChecked = false
+                    moodSad.isChecked = false
+                    moodGood.isChecked = false
+                    moodSoso.isChecked = false
+                    btnSaveMood.text = "Save mood"
+                }
+            }
+        }
     }
 }
