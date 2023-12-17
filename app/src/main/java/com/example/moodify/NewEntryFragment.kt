@@ -72,6 +72,7 @@ class NewEntryFragment : Fragment() {
         if(date != null) {
             var dateSplit = date.split("/")
             binding.entryDate.updateDate(dateSplit[0].toInt(), dateSplit[1].toInt(), dateSplit[2].toInt())
+            Log.d("Test", dateSplit.toString())
         }
 
         // display the entry if one already exists for that user and date

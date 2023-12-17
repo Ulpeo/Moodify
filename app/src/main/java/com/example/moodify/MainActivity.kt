@@ -5,6 +5,7 @@ package com.example.moodify
 // for Firebase
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity(), Home.Callbacks {
 
@@ -80,7 +83,9 @@ class MainActivity : AppCompatActivity(), Home.Callbacks {
         }
         // display new entry fragment
         binding.btnAddEntry.setOnClickListener {
-            loadFragment(NewEntryFragment())
+            val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+            val currentDate = LocalDateTime.now().minusMonths(1).format(formatter)
+            todaysEntry(currentDate)
             true
         }
     }
