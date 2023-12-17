@@ -15,4 +15,9 @@
         <item name="android:fontFamily">@font/alata</item>
         <item name="android:textColor">@color/dark_blue</item>
     </style>
+    <style name="CustomDatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/secondary_blue</item>
+        <item name="android:textColorPrimary">@color/secondary_blue</item>
+        <item name="android:textColorSecondary">@color/dark_blue</item>
+    </style>
 </resources>
